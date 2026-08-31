@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "phb-agentledger"
-version = "0.1.0"
+version = "0.1.1"
 description = "A tamper-evident, hash-chained audit ledger for AI agent actions."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -22,8 +22,8 @@ classifiers = [
 dependencies = ["filelock>=3.12"]
 
 [project.urls]
-Homepage = "https://budrewicz.gumroad.com/l/AgentLedger"
-"Commercial licence" = "https://budrewicz.gumroad.com/l/AgentLedger"
+Homepage = "https://budrewicz.gumroad.com/l/PHB-AgentLedger"
+"Commercial licence" = "https://budrewicz.gumroad.com/l/PHB-AgentLedger"
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]

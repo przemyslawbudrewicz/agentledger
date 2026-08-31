@@ -2,6 +2,10 @@
 
 A tamper-evident, hash-chained audit ledger for AI agent actions.
 
+[Source](https://github.com/przemyslawbudrewicz/agentledger) ·
+[PyPI](https://pypi.org/project/phb-agentledger/) ·
+[Commercial licence](https://budrewicz.gumroad.com/l/PHB-AgentLedger)
+
 When an AI system does something consequential — calls a tool, spends money,
 escalates to a person, refuses a request — you need a record that still means
 something six months later, when someone asks what happened and why. An
