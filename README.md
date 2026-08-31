@@ -1,5 +1,7 @@
 # agentledger
 
+[![tests](https://github.com/przemyslawbudrewicz/agentledger/actions/workflows/tests.yml/badge.svg)](https://github.com/przemyslawbudrewicz/agentledger/actions/workflows/tests.yml)
+
 A tamper-evident, hash-chained audit ledger for AI agent actions.
 
 [Source](https://github.com/przemyslawbudrewicz/agentledger) ·
