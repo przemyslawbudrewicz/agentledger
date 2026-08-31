@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:neo:contract:AuditQueryRequest:1.0.0",
+  "title": "AuditQueryRequest",
+  "x-neo-contract-version": "1.0.0",
+  "x-neo-semantic-owner": "System Authority schema; requesting consumer",
+  "x-neo-invariant": "Bounded read request only; does not authorize export, mutate the ledger, or prove absence.",
+  "allOf": [
+    {
+      "$ref": "urn:neo:contract:RecordEnvelope:1.0.0"
+    },
+    {
+      "type": "object",
+      "required": [
+        "query_id",
+        "requesting_module",
+        "purpose",
+        "correlation_refs",
+        "subject_refs",
+        "event_types",
+        "time_window",
+        "include_artifact_refs",
+        "redaction_profile",
+        "max_events",
+        "requested_at",
+        "query_digest"
+      ],
+      "properties": {
+        "contract_name": {
+          "const": "AuditQueryRequest"
+        },
+        "contract_version": {
+          "const": "1.0.0"
+        },
+        "query_id": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 128
+        },
+        "requesting_module": {
+          "type": "string",
+          "pattern": "^NEO-[A-Z][A-Z0-9]*-[0-9]{3}$"
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "correlation_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "subject_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "event_types": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 127,
+            "pattern": "^[A-Z][A-Z0-9_]{0,126}$"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "time_window": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "mode": {
+                  "const": "ALL_TIME"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "mode"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "mode": {
+                  "const": "WINDOW"
+                },
+                "start_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{1,9})?Z$"
+                },
+                "end_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{1,9})?Z$"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "mode",
+                "start_at",
+                "end_at"
+              ]
+            }
+          ]
+        },
+        "requested_ledger_range_if_any": {
+          "type": "object",
+          "properties": {
+            "start_sequence": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "end_sequence": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "start_sequence",
+            "end_sequence"
+          ]
+        },
+        "include_artifact_refs": {
+          "type": "boolean"
+        },
+        "redaction_profile": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 127,
+          "pattern": "^[A-Z][A-Z0-9_]{0,126}$"
+        },
+        "max_events": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "cursor_if_any": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "requested_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{1,9})?Z$"
+        },
+        "query_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false,
+  "x-neo-semantic-validators": [
+    "AUDIT_QUERY_DIGEST_MATCH",
+    "AUDIT_QUERY_TIME_WINDOW_ORDER",
+    "AUDIT_QUERY_LEDGER_RANGE_ORDER",
+    "AUDIT_QUERY_VISIBILITY_REDACTION_POLICY",
+    "AUDIT_QUERY_EXTERNAL_EXPORT_REQUIRES_EGRESS_AUTHORITY"
+  ]
+}

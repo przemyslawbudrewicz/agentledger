@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:neo:contract:RecordEnvelope:1.0.0",
+  "title": "RecordEnvelope",
+  "x-neo-contract-version": "1.0.0",
+  "x-neo-semantic-owner": "System Authority",
+  "x-neo-invariant": "Every record is versioned/correlatable and content-addressable; schema/digest mismatch rejects the record.",
+  "type": "object",
+  "required": [
+    "contract_name",
+    "contract_version",
+    "record_id",
+    "created_at",
+    "producer_module_id",
+    "correlation_ids",
+    "provenance",
+    "schema_hash",
+    "record_digest",
+    "digest_algorithm",
+    "canonicalization_profile"
+  ],
+  "properties": {
+    "contract_name": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9]{0,127}$"
+    },
+    "contract_version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "record_id": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{1,9})?Z$"
+    },
+    "producer_module_id": {
+      "type": "string",
+      "pattern": "^NEO-[A-Z][A-Z0-9]*-[0-9]{3}$"
+    },
+    "correlation_ids": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "id"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "id": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 128
+          }
+        },
+        "additionalProperties": false
+      },
+      "uniqueItems": true
+    },
+    "provenance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source_type",
+          "source_ref"
+        ],
+        "properties": {
+          "source_type": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+          },
+          "source_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "source_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "schema_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "record_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "digest_algorithm": {
+      "const": "SHA-256"
+    },
+    "canonicalization_profile": {
+      "const": "JCS-1"
+    }
+  },
+  "$comment": "Abstract compositional base. Concrete record schemas must close the complete shape with unevaluatedProperties:false. record_digest is verified by the Neo semantic validator over JCS-1 canonical JSON with record_digest omitted; JSON Schema alone cannot prove this digest.",
+  "x-neo-semantic-validators": [
+    "SCHEMA_HASH_CATALOG_MATCH",
+    "RECORD_DIGEST_JCS1_MATCH"
+  ]
+}

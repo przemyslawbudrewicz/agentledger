@@ -1,0 +1,30 @@
+{
+  "contract_name": "AuditEvent",
+  "contract_version": "1.0.0",
+  "record_id": "record_00000001",
+  "created_at": "2026-08-13T03:40:00Z",
+  "producer_module_id": "NEO-AUD-001",
+  "correlation_ids": [],
+  "provenance": [],
+  "schema_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "record_digest": "025d88c2244535a978ebe0f5641fabef1e16bc8ffdd56d2a68878858c863cd9c",
+  "digest_algorithm": "SHA-256",
+  "canonicalization_profile": "JCS-1",
+  "event_id": "event_00000001",
+  "event_schema_version": "1.0.0",
+  "event_type": "TASK_TRANSITION",
+  "subject_refs": [
+    "task:1"
+  ],
+  "authority_refs_if_relevant": [],
+  "truth_refs_if_relevant": [
+    "reconciliation:1"
+  ],
+  "payload_ref_or_summary": {
+    "summary": "task state transition recorded"
+  },
+  "payload_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "data_classification": "OWNER_PRIVATE",
+  "producer_emitted_at": "2026-08-13T03:40:00Z",
+  "producer_clock_quality": "SYNCHRONIZED"
+}

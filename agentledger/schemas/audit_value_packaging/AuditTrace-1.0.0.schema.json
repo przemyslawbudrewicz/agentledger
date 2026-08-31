@@ -1,0 +1,279 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:neo:contract:AuditTrace:1.0.0",
+  "title": "AuditTrace",
+  "x-neo-contract-version": "1.0.0",
+  "x-neo-semantic-owner": "NEO-AUD-001",
+  "x-neo-invariant": "Point-in-time read-only view; completeness is relative to exact query + ledger cut; trace cannot elevate recorded claims into truth.",
+  "allOf": [
+    {
+      "$ref": "urn:neo:contract:RecordEnvelope:1.0.0"
+    },
+    {
+      "type": "object",
+      "required": [
+        "trace_id",
+        "query_ref",
+        "query_digest",
+        "ledger_cut_sequence",
+        "ledger_cut_hash",
+        "returned_ledger_range",
+        "ordered_event_refs",
+        "ledger_hash_refs",
+        "correlation_summary",
+        "evidence_refs",
+        "reconciliation_refs",
+        "applied_filters",
+        "applied_redactions",
+        "completeness_state",
+        "explanation_summary",
+        "explanation_basis_refs",
+        "generated_at",
+        "trace_digest"
+      ],
+      "properties": {
+        "contract_name": {
+          "const": "AuditTrace"
+        },
+        "contract_version": {
+          "const": "1.0.0"
+        },
+        "trace_id": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 128
+        },
+        "query_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "query_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "ledger_cut_sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ledger_cut_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "returned_ledger_range": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "empty": {
+                  "const": true
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "empty"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "start_sequence": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "end_sequence": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "start_sequence",
+                "end_sequence"
+              ]
+            }
+          ]
+        },
+        "ordered_event_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "ledger_hash_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "correlation_summary": {
+          "type": "object",
+          "properties": {
+            "correlation_refs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "subject_refs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "event_count": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "correlation_refs",
+            "subject_refs",
+            "event_count"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "reconciliation_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "applied_filters": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 127,
+            "pattern": "^[A-Z][A-Z0-9_]{0,126}$"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "applied_redactions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "field_path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "reason_code": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 127,
+                "pattern": "^[A-Z][A-Z0-9_]{0,126}$"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "field_path",
+              "reason_code"
+            ]
+          }
+        },
+        "completeness_state": {
+          "enum": [
+            "COMPLETE",
+            "PARTIAL",
+            "TRUNCATED",
+            "UNKNOWN"
+          ]
+        },
+        "next_cursor_if_any": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "explanation_summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "explanation_basis_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{1,9})?Z$"
+        },
+        "trace_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "completeness_state": {
+                "const": "TRUNCATED"
+              }
+            },
+            "required": [
+              "completeness_state"
+            ]
+          },
+          "then": {
+            "required": [
+              "next_cursor_if_any"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "next_cursor_if_any"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "unevaluatedProperties": false,
+  "x-neo-semantic-validators": [
+    "AUDIT_TRACE_QUERY_DIGEST_MATCH",
+    "AUDIT_TRACE_LEDGER_CUT_INTEGRITY",
+    "AUDIT_TRACE_EVENT_HASH_ALIGNMENT",
+    "AUDIT_TRACE_COMPLETENESS_RELATIVE_TO_CUT",
+    "AUDIT_TRACE_NO_GLOBAL_ABSENCE_INFERENCE",
+    "AUDIT_TRACE_NO_PRIVATE_CHAIN_OF_THOUGHT"
+  ]
+}

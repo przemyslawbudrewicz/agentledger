@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+demo_audit.jsonl
+demo_audit.jsonl.tail
+
+# Business material — deliberately not published
+SELLING.md
+LAUNCH.md
+landing.html
+*.png
